@@ -35,6 +35,16 @@ are as follows:
 - Customer 2: ID 100002, Credit Limit 500.000
 - Customer 3: ID 100003, Credit Limit 7.500.000
 
+### Customer Authentication
+Customers can also authenticate using their customer number and password. The password of the pre-defined customers are
+also `password`. You can authenticate as a customer by providing the customer number and password.
+When authenticated as a customer, you can only see your own loans, installments of them and pay them.
+However, loans can only be created by bank employees.
+
+- Username: `100001`, Password: `password`
+- Username: `100002`, Password: `password`
+- Username: `100003`, Password: `password`
+
 ### Available Endpoints
 The application provides the following endpoints:
 - `GET /api/loans`: List all loans of a customer

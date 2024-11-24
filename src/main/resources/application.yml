@@ -40,3 +40,15 @@ auth:
         password: password
         roles:
           - ADMIN
+      - username: 100001
+        password: password
+        roles:
+          - CUSTOMER
+      - username: 100002
+        password: password
+        roles:
+          - CUSTOMER
+      - username: 100003
+        password: password
+        roles:
+          - CUSTOMER

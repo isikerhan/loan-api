@@ -44,7 +44,7 @@ public class LoanController {
 	private final LoanService loanService;
 
 	@GetMapping
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or authentication.name == #customerId.toString()")
 	@Operation(summary = "Get loans of a customer")
 	@ApiResponse(responseCode = "200", description = "Customer exists and successfully retrieved loans",
 			content = {@Content(mediaType = APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = LoanDto.class)))})
@@ -54,7 +54,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/{loanId}/installments")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or @loanOwnershipService.isLoanOwnedBy(#loanId, authentication.name)")
 	@Operation(summary = "Get installments of a loan")
 	@ApiResponse(responseCode = "200", description = "Loan exists and successfully retrieved installments",
 			content = {@Content(mediaType = APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = LoanInstallmentDto.class)))})
@@ -78,7 +78,7 @@ public class LoanController {
 	}
 
 	@PostMapping("/{loanId}/payments")
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN') or @loanOwnershipService.isLoanOwnedBy(#loanId, authentication.name)")
 	@Validated
 	@Operation(summary = "Pay loan installments")
 	@ApiResponse(responseCode = "200", description = "Successfully paid the loan installments",

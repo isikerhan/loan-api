@@ -72,6 +72,13 @@ public class LoanService {
 				.toList();
 	}
 
+	@Transactional(readOnly = true)
+	public LoanDto findLoanById(Long loanId) throws LoanNotFoundException {
+		final var loan = loanRepository.findById(loanId)
+				.orElseThrow(() -> new LoanNotFoundException(loanId));
+		return loanMapper.mapToLoanDto(loan);
+	}
+
 	@Validated
 	public LoanDto createLoan(@Valid CreateLoanCommand command) throws CustomerNotFoundException,
 			InvalidNumberOfInstallmentsException, InsufficientCreditLimitException, InvalidInterestRateException, LoanAmountTooLowException {

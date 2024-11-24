@@ -1,0 +1,34 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: loan-api
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: false
+  datasource:
+    url: jdbc:h2:mem:loan-api
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+
+loan:
+  interest-rate:
+    min: 0.1
+    max: 0.5
+  installment:
+    values:
+      - 6
+      - 9
+      - 12
+      - 24
+  payment-in-advance-max-months: 3
+  reward-per-day: 0.001
+  penalty-per-day: 0.001
+  min-loan-amount: 1000

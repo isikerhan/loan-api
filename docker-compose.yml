@@ -1,0 +1,9 @@
+name: loan-api
+
+services:
+  loan-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"

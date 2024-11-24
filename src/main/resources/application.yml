@@ -32,3 +32,11 @@ loan:
   reward-per-day: 0.001
   penalty-per-day: 0.001
   min-loan-amount: 1000
+
+auth:
+  basic:
+    users:
+      - username: admin
+        password: password
+        roles:
+          - ADMIN

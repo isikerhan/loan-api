@@ -2,6 +2,7 @@ package com.ing.loanapi.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ControllerExceptionHandler {
 
 	private static final String GENERIC_ERROR_MESSAGE = "An error occurred while processing the request.";
+	private static final String FORBIDDEN_ERROR_MESSAGE = "You are not authorized to access this resource.";
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ErrorDto> handleBusinessException(BusinessException e) {
@@ -39,6 +41,14 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity<Void> handleNoResourceFoundException() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	}
+
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<ErrorDto> handleAuthorizationDeniedException() {
+		final var status = HttpStatus.FORBIDDEN;
+		final var error = new ErrorDto(status.value(), status.name(), FORBIDDEN_ERROR_MESSAGE);
+
+		return ResponseEntity.status(status.value()).body(error);
 	}
 
 	@ExceptionHandler

@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,17 +29,22 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/loans")
 @RequiredArgsConstructor
+@Tag(name = "Loans")
+@SecurityRequirement(name = "basic")
 public class LoanController {
 
 	private final LoanService loanService;
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Get loans of a customer")
 	@ApiResponse(responseCode = "200", description = "Customer exists and successfully retrieved loans",
 			content = {@Content(mediaType = APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = LoanDto.class)))})
@@ -48,6 +54,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/{loanId}/installments")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Get installments of a loan")
 	@ApiResponse(responseCode = "200", description = "Loan exists and successfully retrieved installments",
 			content = {@Content(mediaType = APPLICATION_JSON_VALUE, array = @ArraySchema(schema = @Schema(implementation = LoanInstallmentDto.class)))})
@@ -57,6 +64,7 @@ public class LoanController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	@Validated
 	@Operation(summary = "Create a loan")
 	@ApiResponse(responseCode = "200", description = "Successfully created the loan",
@@ -70,6 +78,7 @@ public class LoanController {
 	}
 
 	@PostMapping("/{loanId}/payments")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Validated
 	@Operation(summary = "Pay loan installments")
 	@ApiResponse(responseCode = "200", description = "Successfully paid the loan installments",
